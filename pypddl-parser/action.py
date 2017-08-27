@@ -38,19 +38,6 @@ class Action(object):
     def effects(self):
         return self._effects[:]
 
-    def instantiate(self, subst):
-        args = [ str(subst.get(param.name, param)) for param in self._params ]
-        precond = { str(l.predicate.ground(subst)) for l in self._precond if l.is_positive() }
-        pos_effect = set()
-        neg_effect = set()
-        for eff in self._effects:
-            ground_predicate = eff.predicate.ground(subst)
-            if eff.is_positive():
-                pos_effect.add(str(ground_predicate))
-            elif eff.is_negative():
-                neg_effect.add(str(ground_predicate))
-        return Action(self._name, args, precond, pos_effect, neg_effect)
-
     def __str__(self):
         operator_str  = '{0}({1})\n'.format(self._name, ', '.join(map(str, self._params)))
         operator_str += '>> precond: {0}\n'.format(', '.join(map(str, self._precond)))

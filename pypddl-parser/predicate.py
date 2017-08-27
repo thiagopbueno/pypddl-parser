@@ -35,18 +35,6 @@ class Predicate(object):
     def arity(self):
         return len(self._args)
 
-    def is_grounded(self):
-        return all( arg.is_constant() for arg in self._args )
-
-    def ground(self, subst):
-        args = []
-        for arg in self._args:
-            if arg in subst:
-                value = subst[arg]
-                arg = Term.constant(value)
-            args.append(arg)
-        return Predicate(self._name, args)
-
     def __str__(self):
         if self._name == '=':
             return '{0} = {1}'.format(str(self._args[0]), str(self._args[1]))

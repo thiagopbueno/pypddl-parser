@@ -30,13 +30,6 @@ class Literal(object):
     def is_negative(self):
         return not self._positive
 
-    def ground(self, subst):
-        ground_predicate = self._predicate.ground(subst)
-        if self.is_positive():
-            return Literal.positive(ground_predicate)
-        if self.is_negative():
-            return Literal.negative(ground_predicate)
-
     @classmethod
     def positive(cls, predicate):
         return Literal(predicate, True)
