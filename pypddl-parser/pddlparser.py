@@ -105,7 +105,7 @@ def t_VARIABLE(t):
 
 
 def t_PROBABILITY(t):
-    r'(0\.\d+) | (1\.0*)'
+    r'[0-1]\.\d+'
     t.value = float(t.value)
     return t
 
@@ -279,7 +279,7 @@ def p_effect(p):
               | LPAREN PROBABILISTIC_KEY PROBABILITY literal RPAREN'''
     if len(p) == 2:
         p[0] = (1.0, p[1])
-    elif len(p) == 5:
+    elif len(p) == 6:
         p[0] = (p[3], p[4])
 
 
