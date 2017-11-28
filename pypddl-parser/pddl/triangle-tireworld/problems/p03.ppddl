@@ -67,6 +67,7 @@
 
 		(vehicle-at x01y01)
 		(not-flattire)
+		(hasspare)
 	)
 
 	(:goal (and (vehicle-at x01y13)))
