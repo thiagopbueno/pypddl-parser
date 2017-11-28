@@ -12,21 +12,16 @@
 		- location)
 
 	(:init
-		(road x01y01 x01y03)
-		(road x01y01 x02y02)
+		(road x01y01 x01y03) (road x01y01 x02y02)
+		(road x01y03 x01y05) (road x01y03 x02y04)
 
-		(road x01y03 x01y05)
-		(road x01y03 x02y04)
-
-		(road x02y02 x01y03)
-		(road x02y02 x03y03)
-
+		(road x02y02 x01y03) (road x02y02 x03y03)
 		(road x02y04 x01y05)
 
 		(road x03y03 x02y04)
 
-		(spare-in x02y02)
-		(spare-in x02y04)
+		(spare-in x02y02) (spare-in x02y04)
+
 		(spare-in x03y03)
 
 		(vehicle-at x01y01)

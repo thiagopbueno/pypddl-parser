@@ -1,0 +1,74 @@
+(define (problem tireworld-03)
+
+	(:domain triangle-tire)
+
+	(:objects
+		x01y13
+				x02y12
+		x01y11			x03y11
+				x02y10			x04y10
+		x01y09			x03y09			x05y09
+				x02y08			x04y08			x06y08
+		x01y07			x03y07			x05y07			x07y07
+				x02y06			x04y06			x06y06
+		x01y05			x03y05			x05y05
+				x02y04			x04y04
+		x01y03			x03y03
+				x02y02
+		x01y01
+
+		- location)
+
+	(:init
+		(road x01y01 x01y03) (road x01y01 x02y02)
+		(road x01y03 x01y05) (road x01y03 x02y04)
+		(road x01y05 x01y07) (road x01y05 x02y06)
+		(road x01y07 x01y09) (road x01y07 x02y08)
+		(road x01y09 x01y11) (road x01y09 x02y10)
+		(road x01y11 x01y13) (road x01y11 x02y12)
+
+		(road x02y02 x01y03) (road x02y02 x03y03)
+		(road x02y04 x01y05)
+		(road x02y06 x01y07) (road x02y06 x03y07)
+		(road x02y08 x01y09)
+		(road x02y10 x01y11) (road x02y10 x03y11)
+		(road x02y012 x01y13)
+
+		(road x03y03 x02y04) (road x03y03 x03y05) (road x03y03 x04y04)
+		(road x03y05 x03y07) (road x03y05 x04y06)
+		(road x03y07 x02y08) (road x03y07 x03y09) (road x03y07 x04y08)
+		(road x03y09 x03y11) (road x03y09 x04y10)
+		(road x03y11 x02y12)
+
+		(road x04y04 x03y05) (road x04y04 x05y05)
+		(road x04y06 x03y07)
+		(road x04y08 x03y09) (road x04y08 x05y09)
+
+		(road x05y05 x04y06) (road x05y05 x05y07) (road x05y05 x06y06)
+		(road x05y07 x05y09) (road x05y07 x06y08)
+		(road x05y09 x04y10)
+
+		(road x06y06 x05y07) (road x06y06 x07y07)
+		(road x06y08 x05y09)
+
+		(road x07y07 x06y08)
+
+		(spare-in x02y02) (spare-in x02y04) (spare-in x02y06) (spare-in x02y08) (spare-in x02y10) (spare-in x02y12)
+
+		(spare-in x03y03) (spare-in x03y11)
+
+		(spare-in x04y04) (spare-in x04y06) (spare-in x04y08) (spare-in x04y10)
+
+		(spare-in x05y05) (spare-in x05y09)
+
+		(spare-in x06y06) (spare-in x06y08)
+
+		(spare-in x07y07)
+
+		(vehicle-at x01y01)
+		(not-flattire)
+	)
+
+	(:goal (and (vehicle-at x01y13)))
+
+)
