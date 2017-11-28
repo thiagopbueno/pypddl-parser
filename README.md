@@ -2,7 +2,7 @@
 
 PDDL's domain and problem file parser in Python3 using [ply](http://www.dabeaz.com/ply/) library. 
 
-Please note it currently only supports the ```:requirements :strips, :typing, :equality```.
+Please note it currently only supports the ```:requirements :strips, :typing, :equality, :probabilistic-effects```.
 
 
 # Install
