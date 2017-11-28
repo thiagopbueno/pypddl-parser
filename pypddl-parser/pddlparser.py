@@ -28,6 +28,7 @@ from problem   import Problem
 tokens = (
     'NAME',
     'VARIABLE',
+    'PROBABILITY',
     'LPAREN',
     'RPAREN',
     'HYPHEN',
@@ -38,6 +39,7 @@ tokens = (
     'STRIPS_KEY',
     'EQUALITY_KEY',
     'TYPING_KEY',
+    'PROBABILISTIC_EFFECTS_KEY',
     'TYPES_KEY',
     'PREDICATES_KEY',
     'ACTION_KEY',
@@ -46,6 +48,7 @@ tokens = (
     'EFFECT_KEY',
     'AND_KEY',
     'NOT_KEY',
+    'PROBABILISTIC_KEY',
     'PROBLEM_KEY',
     'OBJECTS_KEY',
     'INIT_KEY',
@@ -61,25 +64,27 @@ t_EQUALS = r'='
 t_ignore = ' \t'
 
 reserved = {
-    'define'        : 'DEFINE_KEY',
-    'domain'        : 'DOMAIN_KEY',
-    ':requirements' : 'REQUIREMENTS_KEY',
-    ':strips'       : 'STRIPS_KEY',
-    ':equality'     : 'EQUALITY_KEY',
-    ':typing'       : 'TYPING_KEY',
-    ':types'        : 'TYPES_KEY',
-    ':predicates'   : 'PREDICATES_KEY',
-    ':action'       : 'ACTION_KEY',
-    ':parameters'   : 'PARAMETERS_KEY',
-    ':precondition' : 'PRECONDITION_KEY',
-    ':effect'       : 'EFFECT_KEY',
-    'and'           : 'AND_KEY',
-    'not'           : 'NOT_KEY',
-    'problem'       : 'PROBLEM_KEY',
-    ':domain'       : 'DOMAIN_KEY',
-    ':objects'      : 'OBJECTS_KEY',
-    ':init'         : 'INIT_KEY',
-    ':goal'         : 'GOAL_KEY'
+    'define'                    : 'DEFINE_KEY',
+    'domain'                    : 'DOMAIN_KEY',
+    ':requirements'             : 'REQUIREMENTS_KEY',
+    ':strips'                   : 'STRIPS_KEY',
+    ':equality'                 : 'EQUALITY_KEY',
+    ':typing'                   : 'TYPING_KEY',
+    ':probabilistic-effects'    : 'PROBABILISTIC_EFFECTS_KEY',
+    ':types'                    : 'TYPES_KEY',
+    ':predicates'               : 'PREDICATES_KEY',
+    ':action'                   : 'ACTION_KEY',
+    ':parameters'               : 'PARAMETERS_KEY',
+    ':precondition'             : 'PRECONDITION_KEY',
+    ':effect'                   : 'EFFECT_KEY',
+    'and'                       : 'AND_KEY',
+    'not'                       : 'NOT_KEY',
+    'probabilistic'             : 'PROBABILISTIC_KEY',
+    'problem'                   : 'PROBLEM_KEY',
+    ':domain'                   : 'DOMAIN_KEY',
+    ':objects'                  : 'OBJECTS_KEY',
+    ':init'                     : 'INIT_KEY',
+    ':goal'                     : 'GOAL_KEY'
 }
 
 
@@ -96,6 +101,12 @@ def t_NAME(t):
 
 def t_VARIABLE(t):
     r'\?[a-zA-z_][a-zA-Z_0-9\-]*'
+    return t
+
+
+def t_PROBABILITY(t):
+    r'(0\.\d+) | (1\.0*)'
+    t.value = float(t.value)
     return t
 
 
@@ -175,7 +186,8 @@ def p_require_key_lst(p):
 def p_require_key(p):
     '''require_key : STRIPS_KEY
                    | EQUALITY_KEY
-                   | TYPING_KEY'''
+                   | TYPING_KEY
+                   | PROBABILISTIC_EFFECTS_KEY'''
     p[0] = str(p[1])
 
 
@@ -245,12 +257,30 @@ def p_precond_def(p):
 
 
 def p_effects_def(p):
-    '''effects_def : EFFECT_KEY LPAREN AND_KEY literals_lst RPAREN
-                   | EFFECT_KEY literal'''
+    '''effects_def : EFFECT_KEY LPAREN AND_KEY effects_lst RPAREN
+                   | EFFECT_KEY effect'''
     if len(p) == 3:
         p[0] = [p[2]]
     elif len(p) == 6:
         p[0] = p[4]
+
+
+def p_effects_lst(p):
+    '''effects_lst : effect effects_lst
+                   | effect'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    elif len(p) == 3:
+        p[0] = [p[1]] + p[2]
+
+
+def p_effect(p):
+    '''effect : literal
+              | LPAREN PROBABILISTIC_KEY PROBABILITY literal RPAREN'''
+    if len(p) == 2:
+        p[0] = (1.0, p[1])
+    elif len(p) == 5:
+        p[0] = (p[3], p[4])
 
 
 def p_literals_lst(p):

@@ -38,6 +38,9 @@ class Literal(object):
     def negative(cls, predicate):
         return Literal(predicate, False)
 
+    def __repr__(self):
+        return str(self)
+
     def __str__(self):
         if self.is_positive():
             return str(self._predicate)

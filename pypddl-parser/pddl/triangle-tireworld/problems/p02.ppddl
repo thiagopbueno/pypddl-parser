@@ -1,0 +1,76 @@
+(define (problem tireworld-02)
+
+	(:domain triangle-tire)
+
+	(:objects
+		x01y09
+				x02y08
+		x01y07			x03y07
+				x02y06			x04y06
+		x01y05			x03y05			x05y05
+				x02y04			x04y04
+		x01y03			x03y03
+				x02y02
+		x01y01
+
+		- location)
+
+	(:init
+		(road x01y01 x01y03)
+		(road x01y01 x02y02)
+
+		(road x01y03 x01y05)
+		(road x01y03 x02y04)
+
+		(road x01y05 x01y07)
+		(road x01y05 x02y06)
+
+		(road x01y07 x01y09)
+		(road x01y07 x02y08)
+
+		(road x02y02 x01y03)
+		(road x02y02 x03y03)
+
+		(road x02y04 x01y05)
+
+		(road x02y06 x01y07)
+		(road x02y06 x03y07)
+
+		(road x02y08 x01y09)
+
+		(road x03y03 x02y04)
+		(road x03y03 x03y05)
+		(road x03y03 x04y04)
+
+		(road x03y05 x02y06)
+		(road x03y05 x04y06)
+
+		(road x03y07 x02y08)
+
+		(road x04y04 x03y05)
+		(road x04y04 x05y05)
+
+		(road x04y06 x03y07)
+
+		(road x05y05 x04y06)
+
+		(spare-in x02y02)
+		(spare-in x02y04)
+		(spare-in x02y06)
+		(spare-in x02y08)
+
+		(spare-in x03y03)
+		(spare-in x03y07)
+
+		(spare-in x04y04)
+		(spare-in x04y06)
+
+		(spare-in x05y05)
+
+		(vehicle-at x01y01)
+		(not-flattire)
+	)
+
+	(:goal (and (vehicle-at x01y09)))
+
+)
