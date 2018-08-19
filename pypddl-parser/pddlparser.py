@@ -105,8 +105,8 @@ def t_VARIABLE(t):
 
 
 def t_PROBABILITY(t):
-    r'[0-1]\.\d+'
-    t.value = float(t.value)
+    r'[0-1]\.\d+|\d+\/\d+'
+    t.value = float('{:.4f}'.format(eval(t.value)))
     return t
 
 
@@ -257,12 +257,15 @@ def p_precond_def(p):
 
 
 def p_effects_def(p):
-    '''effects_def : EFFECT_KEY LPAREN AND_KEY effects_lst RPAREN
+    '''effects_def : EFFECT_KEY LPAREN AND_KEY LPAREN PROBABILISTIC_KEY effects_lst RPAREN RPAREN
+                   | EFFECT_KEY LPAREN AND_KEY effects_lst RPAREN
                    | EFFECT_KEY effect'''
     if len(p) == 3:
         p[0] = [p[2]]
     elif len(p) == 6:
         p[0] = p[4]
+    elif len(p) == 9:
+        p[0] = p[6] 
 
 
 def p_effects_lst(p):
@@ -276,11 +279,14 @@ def p_effects_lst(p):
 
 def p_effect(p):
     '''effect : literal
-              | LPAREN PROBABILISTIC_KEY PROBABILITY literal RPAREN'''
+              | LPAREN PROBABILISTIC_KEY PROBABILITY literal RPAREN
+              | PROBABILITY LPAREN AND_KEY literals_lst RPAREN'''
     if len(p) == 2:
         p[0] = (1.0, p[1])
-    elif len(p) == 6:
+    elif len(p) == 6 and p[2] == 'probabilistic':
         p[0] = (p[3], p[4])
+    elif len(p) == 6:
+        p[0] = (p[1], p[4])
 
 
 def p_literals_lst(p):
