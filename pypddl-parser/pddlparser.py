@@ -105,8 +105,8 @@ def t_VARIABLE(t):
 
 
 def t_PROBABILITY(t):
-    r'[0-1]\.\d+'
-    t.value = float(t.value)
+    r'[0-1]\.\d+|\d+\/\d+'
+    t.value = float('{:.4f}'.format(eval(t.value)))
     return t
 
 
@@ -272,15 +272,41 @@ def p_effects_lst(p):
         p[0] = [p[1]]
     elif len(p) == 3:
         p[0] = [p[1]] + p[2]
+    dummy_lst = []
+    for element in p[0]:
+        if isinstance(element[0], tuple):
+            for tuple_obj in element:
+                dummy_lst.append(tuple_obj)
+        else:
+            dummy_lst.append(element)
+    p[0] = dummy_lst
 
 
 def p_effect(p):
     '''effect : literal
-              | LPAREN PROBABILISTIC_KEY PROBABILITY literal RPAREN'''
+              | LPAREN PROBABILISTIC_KEY probabilistic_lst RPAREN'''
     if len(p) == 2:
         p[0] = (1.0, p[1])
+    elif len(p) == 5:
+        p[0] = p[3]
+
+
+def p_probabilistic_lst(p):
+    '''probabilistic_lst : probabilistic probabilistic_lst
+                         | probabilistic'''
+    if len(p) == 2:
+        p[0] = p[1]
+    elif len(p) == 3:
+        p[0] = (p[1], p[2])
+
+
+def p_probabilistic(p):
+    '''probabilistic : PROBABILITY literal
+                     | PROBABILITY LPAREN AND_KEY literals_lst RPAREN'''
+    if len(p) == 3:
+        p[0] = (p[1], p[2])
     elif len(p) == 6:
-        p[0] = (p[3], p[4])
+        p[0] = (p[1], p[4])
 
 
 def p_literals_lst(p):
